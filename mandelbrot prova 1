@@ -1,0 +1,105 @@
+
+
+
+import turtle
+turtle.speed("fastest")
+
+turtle.setup(1400,1000,0,0)
+turtle.colormode(255)
+
+
+cx = 0
+cy = 0
+max_iteracions = 20
+longitud_de_pas = 0.0025
+a = 0
+x = -600
+y_inicial = -350
+y = y_inicial
+limit_superior_x = 300
+limit_superior_y = 350
+
+
+# dibuixo la finestra
+
+turtle.pencolor("lightblue")
+turtle.penup()
+turtle.goto(x,y)
+turtle.pendown()
+turtle.goto(x,limit_superior_y)
+turtle.goto(limit_superior_x,limit_superior_y)
+turtle.goto(limit_superior_x,y)
+turtle.goto(x,y)
+turtle.penup()
+
+turtle.pencolor(224,253,255)
+aux = 1
+while aux <= 3:
+    turtle.goto(x + aux * (limit_superior_x - x) / 4,y)
+    turtle.pendown()
+    turtle.goto(x + aux * (limit_superior_x - x) / 4,limit_superior_y)
+    turtle.penup()
+    turtle.goto(x , y + aux * (limit_superior_y - y) / 4)
+    turtle.pendown()
+    turtle.goto(limit_superior_x , y + aux * (limit_superior_y - y) / 4)
+    turtle.penup()
+    aux = aux + 1
+
+
+# dibuixo els punts de referència
+turtle.pencolor("lightblue")
+aux = 0
+while aux <= 4:
+    turtle.goto(x + aux * (limit_superior_x - x) / 4,y) # linia d'abaix
+    turtle.dot(5,"lightblue")
+    turtle.goto(x + aux * (limit_superior_x - x) / 4,y - 15)
+    turtle.write(str((x + aux * (limit_superior_x - x) / 4) * longitud_de_pas),True,"center",("arial",12))
+    turtle.goto(x + aux * (limit_superior_x - x) / 4,limit_superior_y) # linia d' adalt
+    turtle.dot(5,"lightblue")
+    turtle.write(str((x + aux * (limit_superior_x - x) / 4) * longitud_de_pas),True,"center",("arial",12))
+    turtle.goto(x , y + aux * (limit_superior_y - y) / 4) # linia de l'esquerra
+    turtle.dot(5,"lightblue")
+    turtle.goto(x - 5 , y + aux * (limit_superior_y - y) / 4 - 5)
+    turtle.write(str((y + aux * (limit_superior_y - y) / 4) * longitud_de_pas),True,"right",("arial",12))
+    turtle.goto(limit_superior_x , y + aux * (limit_superior_y - y) / 4) # linia de la dreta
+    turtle.dot(5,"lightblue")
+    turtle.goto(limit_superior_x + 5 , y + aux * (limit_superior_y - y) / 4 - 5)
+    turtle.write(str((y + aux * (limit_superior_y - y) / 4) * longitud_de_pas),True,"left",("arial",12))
+    aux = aux + 1
+
+
+# títols
+
+turtle.goto(x, limit_superior_y + 15)
+turtle.pencolor("darkblue")
+turtle.write("CONJUNT DE MANDELBROT",True,"left",("arial",20))
+#turtle.write("\tAmple horitzontal finestra: " + str(x * longitud_de_pas) + " a " + str(limit_superior_x * longitud_de_pas),True,"left",("arial",12))
+turtle.write("\tNombre màxim d'iteracions: " + str(max_iteracions),True,"left",("arial",12))
+
+# dibuxo el conjunt de mandelbrot
+
+while x < limit_superior_x:
+    cx = x * longitud_de_pas
+    y = y_inicial
+    while y < limit_superior_y:
+        zx = 0
+        zy = 0
+        cy = y * longitud_de_pas
+        while a < max_iteracions:
+                zx1 = zx ** 2 - zy ** 2 + cx
+                zy1 = 2 * zx * zy + cy
+                zx = zx1
+                zy = zy1
+                modul = (zx ** 2 + zy ** 2) ** 0.5
+                if modul >=2:
+                    a = max_iteracions
+                a = a + 1
+        turtle.goto(x, y)
+        if modul < 2:
+            turtle.dot(2,"black")
+        y = y + 2
+        a = 0
+        cy = 0
+    x = x + 2
+    
+turtle.hide()
